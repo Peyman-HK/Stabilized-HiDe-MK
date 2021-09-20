@@ -2,7 +2,7 @@
 
 This repository contains code samples for "Deep neural networks with controlled variable selection for the identification of putative causal genetic variants". The method is a novel hierarchical deep neural network which is equipped with multiple sets of knockoffs with FDR guarantees. 
 
-![main flow](/../main/Images/Flowchart.jpg?raw=true "Optional Title")
+![main flow](/../main/Images/Flowchart.jpg?raw=true "HiDe-MK pipeline")
 
 The code is written for Python 3.6, Keras 2.4 and Tensorflow 2.1. It may need modification for compatibility with earlier or later versions of the libraries.
 
