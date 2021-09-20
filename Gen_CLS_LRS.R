@@ -19,7 +19,7 @@ print(paste0("Current h2 - herediability is: ", h2))
 indx <- Sys.getenv("SLURM_ARRAY_TASK_ID")
 print(indx)
 
-source('/oak/stanford/groups/zihuai/Peyman/DeepPinks/Mul_DP/Top_Med/KnockoffScreen_AL_vMar16-updated.R')
+source('/oak/stanford/groups/zihuai/Peyman/DeepPinks/Mul_DP/Top_Med/KnockoffScreen.R')
 
 #Load SKAT haplotypes
 library(SKAT)
