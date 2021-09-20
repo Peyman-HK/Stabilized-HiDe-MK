@@ -1,4 +1,4 @@
-# DeepPink
+# Hierarchical DNN with multiple knockoffs
 import time
 import math
 import csv
