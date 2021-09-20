@@ -1,4 +1,6 @@
-# De-randomized Hierarchical deep neural network with multiple knockoffs (De-randomized HiDe-MK)
+# Deep neural networks with controlled variable selection for the identification of putative causal genetic variants
+
+The proposed method is called: De-randomized Hierarchical deep neural network with multiple knockoffs (De-randomized HiDe-MK).
 
 This repository code was written in Keras is for a novel hierarchical deep neural network which is equipped with multiple sets of knockoffs with FDR guarantees. To reproduce the results please have Keras version 2.4 and Tensorflow 2.1.  
 
