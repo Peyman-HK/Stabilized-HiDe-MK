@@ -11,7 +11,6 @@ print(tf.__version__)
 import keras
 print(keras.__version__)
 import random
-from sklearn.model_selection import learning_curve,GridSearchCV,RandomizedSearchCV
 from keras.models import Sequential, Model
 from hyperopt import *
 from keras.layers import *
@@ -20,7 +19,6 @@ from keras.objectives import mae
 from keras import regularizers, optimizers
 from keras.callbacks import EarlyStopping
 from keras.initializers import Constant
-from sklearn.preprocessing import StandardScaler,LabelEncoder
 from sklearn.metrics import mean_absolute_error, median_absolute_error, r2_score
 from math import sqrt
 from sklearn.metrics import mean_squared_error
@@ -30,21 +28,17 @@ from keras import metrics
 from sklearn import preprocessing
 import sys, os
 import pickle
-from keras.optimizers import Adam, RMSprop,SGD, Adagrad, Adadelta, Nadam
+from keras.optimizers import *
 from keras.applications.vgg19 import VGG19
 from keras import optimizers, metrics, models, layers
 from keras.utils.np_utils import to_categorical
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, roc_auc_score
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import make_scorer, mean_squared_error, explained_variance_score, mean_absolute_error,accuracy_score
-from tensorflow.python.keras.wrappers.scikit_learn import KerasRegressor, KerasClassifier
+from sklearn.metrics import mean_squared_error,mean_absolute_error,accuracy_score
 from scipy import stats
 import sklearn
 from skopt.space import Real, Integer
-from keras.layers import Dense, Input, Concatenate, Lambda
-from keras.layers import LeakyReLU
-from keras.layers import PReLU, ThresholdedReLU 
-from keras.utils.generic_utils import get_custom_objects
+from keras.layers import *
 
 print('The scikit-learn version is {}.'.format(sklearn.__version__))
 
@@ -176,9 +170,6 @@ def getModelLocalEq(pVal, coeff1, lr):
        
     local2 = LocallyConnected1D(8,Kernel_Size, strides=STRIDE, use_bias=bias,kernel_initializer='glorot_normal', activation='elu')(Dropout2);
     show_layer_info('LocallyConnected1D', local2); 
-
-    #max_pool_1d_2 = tf.keras.layers.AveragePooling1D(pool_size=Kernel_Size,strides=STRIDE, padding='same')(local2)
-    #show_layer_info('MaxPooling1D', max_pool_1d_2); 
 
     flat = Flatten()(local2); 
     show_layer_info('Flatten', flat);            
