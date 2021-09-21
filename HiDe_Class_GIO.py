@@ -19,20 +19,15 @@ from keras.objectives import mae
 from keras import regularizers, optimizers
 from keras.callbacks import EarlyStopping
 from keras.initializers import Constant
-from sklearn.metrics import mean_absolute_error, median_absolute_error, r2_score
 from math import sqrt
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import KFold
-from sklearn.metrics import log_loss
 from keras import metrics
-from sklearn import preprocessing
 import sys, os
 import pickle
 from keras.optimizers import *
-from keras.applications.vgg19 import VGG19
 from keras import optimizers, metrics, models, layers
-from keras.utils.np_utils import to_categorical
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, roc_auc_score
+from sklearn.metrics import accuracy_score, roc_auc_score
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error,mean_absolute_error,accuracy_score
 from scipy import stats
@@ -47,30 +42,12 @@ print("SLURM_ARRAY_TASK_ID {0}".format(indx))
 print(indx)
 batch_size = 1024
 validation_split = 0
+################ Load a CSV file of the tuning hyperparameters with column headers 'Learning_Rate', 'L1_Norm', and 'Epoch'
+Param_Space = pd.read_csv('../Param_SKAT.csv', header = 0);
 ################
-Param_Space = pd.read_csv('/oak/stanford/groups/zihuai/Peyman/DeepPinks/Mul_DP/APOE_Proj/csv_excel/Param_SKAT2.csv', header = 0);
-################
-#lr = Param_Space['Learning_Rate'].iat[indx]
-#CoeffS = Param_Space['L1_Norm'].iat[indx]
-#num_epochs = Param_Space['Epoch'].iat[indx]
-#print(lr)
-#print(CoeffS)
 FILTER = 8;
 Kernel_Size = 5; 
 STRIDE = 5; 
-#Const = float(np.sqrt((2.0 * np.log(pVal)) / Num_instance))
-#coff = [0.0001, .001, 0.01, 0.0005, .005, 0.05] # 
-#CoeffS = np.asarray(coff) * Const
-#CoeffS = np.array([0.005, .001, 0.01, 0.05] * Const);
-#CoeffS = np.array([1e-7, 5e-7, 1e-6, 5e-6, 1e-5, 5e-5, 1e-4, 5e-4, 1e-3]) 
-#CoeffS = [0.01 * np.sqrt((2.0 * np.log(pVal)) / Num_instance)];
-#CoeffS = np.array([1e-6, 1e-5])
-#Stride_pool = 3
-#print("_" * 20) 
-#print("lr, CoeffS, Kernel_Size, FILTER, num_epochs, indx")
-#print([lr, CoeffS, Kernel_Size, FILTER, num_epochs, indx])
-#print("_" * 20) 
-
 ################################################################################
 ML_Type = sys.argv[1]  # Reg or Class
 Gene_Type = sys.argv[2]  # Rare or Common or Both
