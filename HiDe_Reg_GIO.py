@@ -4,12 +4,10 @@ import math
 import csv
 import pandas as pd
 import numpy as np
-from scipy.linalg import qr
 import tensorflow as tf
 import keras
 print(keras.__version__)
 import random
-from sklearn.model_selection import learning_curve,GridSearchCV,RandomizedSearchCV
 from keras.models import Sequential, Model
 from hyperopt import *
 from keras.layers import *
@@ -18,24 +16,17 @@ from keras.objectives import mae
 from keras import regularizers, optimizers
 from keras.callbacks import EarlyStopping
 from keras.initializers import Constant
-from sklearn.preprocessing import StandardScaler,LabelEncoder
-from sklearn.metrics import mean_absolute_error, median_absolute_error, r2_score
 from math import sqrt
-from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import KFold
-from sklearn.metrics import log_loss
 from keras import metrics
 from sklearn import preprocessing
 import sys, os
 import pickle
-from keras.optimizers import Adam, RMSprop,SGD, Adagrad, Adadelta
-from keras.applications.vgg19 import VGG19
+from keras.optimizers import Adam, RMSprop,SGD
 from keras import optimizers, metrics, models, layers
 from keras.utils.np_utils import to_categorical
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, roc_auc_score
+from sklearn.metrics import *
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import make_scorer, mean_squared_error, explained_variance_score, mean_absolute_error,accuracy_score
-from tensorflow.python.keras.wrappers.scikit_learn import KerasRegressor, KerasClassifier
 from scipy import stats
 import sklearn
 from skopt.space import Real, Integer
@@ -45,21 +36,18 @@ print('The scikit-learn version is {}.'.format(sklearn.__version__))
 #tf.compat.v1.enable_eager_execution()
 print('The TF version is {}.'.format(tf.__version__))
 
-indx = int(os.environ["SLURM_ARRAY_TASK_ID"])
-print("SLURM_ARRAY_TASK_ID {0}".format(indx))
-print(indx)
+indx = 1
 batch_size = 1024
 validation_split = 0
+################ Load a CSV file of the tuning hyperparameters with column headers 'Learning_Rate', 'L1_Norm', and 'Epoch'
+Param_Space = pd.read_csv('../Param_SKAT.csv', header = 0);
+################
 FILTER = 8;
 Kernel_Size = 5; 
 STRIDE = 5; 
-################
-Param_Space = pd.read_csv('/oak/stanford/groups/zihuai/Peyman/DeepPinks/Mul_DP/APOE_Proj/csv excel/Param_SKAT4.csv', header = 0);
-################
-
 ################################################################################
 ML_Type = sys.argv[1]  # Reg or Class
-Gene_Type = sys.argv[2]  # Rare or Common
+Gene_Type = sys.argv[2]  # Rare or Common or Both
 Feature_Size = sys.argv[3]  # Feature size {50, 100, 200, 400, 600, 800, 1000}
 print(ML_Type)
 print(Gene_Type)
