@@ -149,7 +149,7 @@ def getModelLocalEq(pVal, coeff1, lr):
     flat = Flatten()(local2); 
     show_layer_info('Flatten', flat);            
 
-    dense1 = Dense(30, activation='elu',use_bias=bias,kernel_initializer='glorot_normal')(flat); #, kernel_regularizer=tf.keras.regularizers.l1(coeff1)
+    dense1 = Dense(50, activation='elu',use_bias=bias,kernel_initializer='glorot_normal')(flat); #, kernel_regularizer=tf.keras.regularizers.l1(coeff1)
     show_layer_info('Dense', dense1);  
    
     out_ = Dense(1, activation='sigmoid', use_bias=bias, kernel_initializer='glorot_normal')(dense1) 
