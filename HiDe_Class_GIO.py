@@ -37,9 +37,7 @@ from keras.layers import *
 
 print('The scikit-learn version is {}.'.format(sklearn.__version__))
 
-indx = int(os.environ["SLURM_ARRAY_TASK_ID"])
-print("SLURM_ARRAY_TASK_ID {0}".format(indx))
-print(indx)
+indx = 1
 batch_size = 1024
 validation_split = 0
 ################ Load a CSV file of the tuning hyperparameters with column headers 'Learning_Rate', 'L1_Norm', and 'Epoch'
