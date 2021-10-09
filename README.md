@@ -10,3 +10,6 @@ To obtain the FDR and power through the feature importance score learned by HiDe
 
 The simulation datasets were also written in R programming language for both classification and regression problems, reproducible by Gen_CLS_LRS.R and Gen_Reg_LRS.R. 
 
+The KnockoffScreen method was first proposed in Nature communications journal at: https://www.nature.com/articles/s41467-021-22889-4
+
+Any question, please feel free to ask at: peymanhk@stanford.edu
