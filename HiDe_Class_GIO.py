@@ -4,7 +4,6 @@ import math
 import csv
 import pandas as pd
 import numpy as np
-from scipy.linalg import qr
 import tensorflow as tf
 #tf.compat.v1.enable_eager_execution()
 print(tf.__version__)
@@ -12,7 +11,6 @@ import keras
 print(keras.__version__)
 import random
 from keras.models import Sequential, Model
-from hyperopt import *
 from keras.layers import *
 from keras import backend as K
 from keras.objectives import mae
