@@ -9,7 +9,6 @@ import keras
 print(keras.__version__)
 import random
 from keras.models import Sequential, Model
-from hyperopt import *
 from keras.layers import *
 from keras import backend as K
 from keras.objectives import mae
@@ -186,15 +185,9 @@ KFold(n_splits=num_folds, random_state=869, shuffle=True)
 pred_train = []
 pred_test = []
 
-
-
-
 #################################
 num_coef = 12 #len(CoeffS)
 #################################
-
-
-
 
 SS = (num_folds, num_coef)
 MSE_te = np.zeros(SS)
@@ -218,9 +211,7 @@ def get_callbacks():
     callbacks =[EarlyStopping(monitor='val_loss', patience = 200, verbose=0, mode='min')]
     return callbacks
 
-
 start = time.time()
-
 for ii in range(0, num_coef): #val in lrS:
     print(ii)
     lr = Param_Space['Learning_Rate'].iat[ii]
@@ -269,9 +260,7 @@ for ii in range(0, num_coef): #val in lrS:
 end = time.time()
 print(end - start)
 
-CPU_Time = end - start
-    
-# result_test = np.mean(np.array(pred_test), axis = 0)
+CPU_Time = end - start    
 print(MSE_te)
 #Average_MSE = np.mean(MSE_te,axis=0)
 Average_MSE = MSE_te.mean(axis=0) #column means
@@ -279,7 +268,6 @@ print(Average_MSE)
 
 Opt_ind = np.argmin(Average_MSE)
 print(Opt_ind)
-#Opt_ind =Opt_ind -1
 Best_coeff = Param_Space['L1_Norm'].iat[Opt_ind]
 Opt_epochs = int(Param_Space['Epoch'].iat[Opt_ind])
 Best_LR = Param_Space['Learning_Rate'].iat[Opt_ind]
@@ -341,7 +329,6 @@ MSE_All = mean_squared_error(Y, y_score)
 print(MSE_All)
 
 Grad2 = Gradients_All;
-#Grad2 = Gradients_All[0:9800,:,:]
 
 avg_all = np.zeros((pVal,Num_knock+1));
 for row_ind in range(Grad2.shape[1]):
