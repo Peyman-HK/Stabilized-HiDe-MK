@@ -12,4 +12,4 @@ The simulation datasets were also written in R programming language for both cla
 
 The KnockoffScreen method was first proposed in Nature communications journal at: https://www.nature.com/articles/s41467-021-22889-4
 
-Any question, please feel free to ask at: peymanhk@stanford.edu
+Any question, please feel free to ask me at: peymanhk@stanford.edu
