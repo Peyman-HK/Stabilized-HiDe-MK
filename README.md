@@ -23,7 +23,7 @@ This package requires only a standard computer with about 4 GB of RAM. For optim
 
 RAM: 4+ GB
 
-CPU: 4+ cores, 3.3+ GHz/core
+CPU: 4+ cores, 3.3+ GHz
 
 We examined the codes on both local computer and remotly.
 
