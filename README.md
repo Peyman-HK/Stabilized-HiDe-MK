@@ -33,11 +33,9 @@ We examined the codes on both local computer and remotly.
 
 The package is tested on Windows 10 and Mac OS operating systems. 
 
-The CRAN package should be compatible with Windows, Mac. Before setting up the HiDe-MK package, users should have R version 3.4.0 or higher, Python version 3.6.0 and several packages set up from CRAN.
+The CRAN package should be compatible with Windows, Mac. Before setting up the HiDe-MK package, users should have R version 3.4.0 or higher, Python version 3.6.0, Keras 2.4 and Tensorflow 2.1 or Keras 2.6 and Tensorflow 2.6. Several packages should be set up from CRAN and Python libraries as well.
 
 
-
-The code is written for Python 3.6, Keras 2.4 and Tensorflow 2.1. It may need modification for compatibility with earlier or later versions of the libraries. We also examined the code for Tensorflow 2.6 and Keras 2.6 and it worked well with no error. 
 
 To obtain the FDR and power through the feature importance score learned by HiDe-MK, you should run the R script FDR_Pow_MK.R. The target FDR levels are set from 0.01 to 0.20 with step size 0.01. 
 
