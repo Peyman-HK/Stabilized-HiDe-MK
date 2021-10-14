@@ -33,7 +33,7 @@ We examined the codes on both local computer and remotly.
 
 The package is tested on Windows 10 and Mac OS operating systems. 
 
-The CRAN package should be compatible with Windows, Mac. Before setting up the HiDe-MK package, users should have R version 3.4.0 or higher, Python version 3.6.0, Keras 2.4 and Tensorflow 2.1 or Keras 2.6 and Tensorflow 2.6. Several packages should be set up from CRAN and Python libraries as well.
+The CRAN package should be compatible with Windows, Mac. Before setting up the HiDe-MK package, users should have R version 3.4.0 or higher, Python version 3.6.0, Keras 2.4 and Tensorflow 2.1 or Keras 2.6 and Tensorflow 2.6. Several packages and dependencies should be set up from CRAN and Python libraries as well.
 
 
 
