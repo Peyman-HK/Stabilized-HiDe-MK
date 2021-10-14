@@ -21,7 +21,7 @@ Manuals: Package manuals for help in both R and python
 ### Hardware requirements
 This package requires only a standard computer with about 4 GB of RAM. For optimal performance, we recommend a computer with the following hardware properties:
 
-RAM: 8+ GB
+RAM: 4+ GB
 
 CPU: 4+ cores, 3.3+ GHz/core
 
