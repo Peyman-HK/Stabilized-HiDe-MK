@@ -1,81 +1,44 @@
-# DeepPink
+# HiDe-MK
 import time
 import math
 import csv
-import pandas as pd
-import numpy as np
-from scipy.linalg import qr
-import tensorflow as tf
-#tf.compat.v1.enable_eager_execution()
-print(tf.__version__)
-import keras
-print(keras.__version__)
-import random
-from sklearn.model_selection import learning_curve,GridSearchCV,RandomizedSearchCV
-from keras.models import Sequential, Model
-from hyperopt import *
-from keras.layers import *
-from keras import backend as K
-from keras.objectives import mae
-from keras import regularizers, optimizers
-from keras.callbacks import EarlyStopping
-from keras.initializers import Constant
-from sklearn.preprocessing import StandardScaler,LabelEncoder
-from sklearn.metrics import mean_absolute_error, median_absolute_error, r2_score
-from math import sqrt
-from sklearn.metrics import mean_squared_error
-from sklearn.model_selection import KFold
-from sklearn.metrics import log_loss
-from keras import metrics
-from sklearn import preprocessing
 import sys, os
 import pickle
-from keras.optimizers import Adam, RMSprop,SGD, Adagrad, Adadelta, Nadam
-from keras.applications.vgg19 import VGG19
-from keras import optimizers, metrics, models, layers
-from keras.utils.np_utils import to_categorical
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, roc_auc_score
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import make_scorer, mean_squared_error, explained_variance_score, mean_absolute_error,accuracy_score
-from tensorflow.python.keras.wrappers.scikit_learn import KerasRegressor, KerasClassifier
-from scipy import stats
+import random
+import pandas as pd
+import numpy as np
+import tensorflow as tf
+print('The TF version is {}.'.format(tf.__version__))
+import keras
+print('The Keras version is {}.'.format(keras.__version__))
+
+from keras import metrics, models, layers
+from keras.models import Sequential, Model
+from keras.layers import *
+from keras import backend as K
+from keras import regularizers, optimizers
+from keras.optimizers import Adam,SGD
+from keras.callbacks import EarlyStopping
+from keras.initializers import Constant
+
 import sklearn
-from skopt.space import Real, Integer
-from keras.layers import Dense, Input, Concatenate, Lambda
-from keras.layers import LeakyReLU
-from keras.layers import PReLU, ThresholdedReLU 
-from keras.utils.generic_utils import get_custom_objects
-
 print('The scikit-learn version is {}.'.format(sklearn.__version__))
+from sklearn import preprocessing
+from sklearn.preprocessing import StandardScaler,LabelEncoder
+from sklearn.model_selection import KFold
+from sklearn.metrics import accuracy_score, roc_auc_score,mean_squared_error,mean_absolute_error
+from sklearn.model_selection import train_test_split
 
-indx = int(os.environ["SLURM_ARRAY_TASK_ID"])
-print("SLURM_ARRAY_TASK_ID {0}".format(indx))
-print(indx)
+#tf.compat.v1.enable_eager_execution()
+indx = 1
 batch_size = 1024
 validation_split = 0
-################
-Param_Space = pd.read_csv('/oak/stanford/groups/zihuai/Peyman/DeepPinks/Mul_DP/APOE_Proj/csv_excel/Param_SKAT2.csv', header = 0);
-################
-#lr = Param_Space['Learning_Rate'].iat[indx]
-#CoeffS = Param_Space['L1_Norm'].iat[indx]
-#num_epochs = Param_Space['Epoch'].iat[indx]
-#print(lr)
-#print(CoeffS)
 FILTER = 8;
 Kernel_Size = 5; 
 STRIDE = 5; 
-#Const = float(np.sqrt((2.0 * np.log(pVal)) / Num_instance))
-#coff = [0.0001, .001, 0.01, 0.0005, .005, 0.05] # 
-#CoeffS = np.asarray(coff) * Const
-#CoeffS = np.array([0.005, .001, 0.01, 0.05] * Const);
-#CoeffS = np.array([1e-7, 5e-7, 1e-6, 5e-6, 1e-5, 5e-5, 1e-4, 5e-4, 1e-3]) 
-#CoeffS = [0.01 * np.sqrt((2.0 * np.log(pVal)) / Num_instance)];
-#CoeffS = np.array([1e-6, 1e-5])
-#Stride_pool = 3
-#print("_" * 20) 
-#print("lr, CoeffS, Kernel_Size, FILTER, num_epochs, indx")
-#print([lr, CoeffS, Kernel_Size, FILTER, num_epochs, indx])
-#print("_" * 20) 
+################
+Param_Space = pd.read_csv('/oak/stanford/groups/zihuai/Peyman/DeepPinks/Mul_DP/APOE_Proj/csv excel/Param_SKAT4.csv', header = 0);
+################
 
 ################################################################################
 ML_Type = sys.argv[1]  # Reg or Class
