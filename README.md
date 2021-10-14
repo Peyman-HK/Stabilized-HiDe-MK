@@ -1,9 +1,7 @@
 # "De-randomized hierarchical deep neural networks with multiple knockoffs (De-randomized HiDe-MK)"
 
 ## Overview 
-Deep neural networks (DNN) have been used successfully in many scientific problems for their high prediction accuracy, but their application to genetic studies remains challenging due to their poor interpretability. We consider the problem of scalable, robust variable selection in DNN for the identification of putative causal genetic variants in genome sequencing studies. We identified a pronounced randomness in feature selection in DNN due to its stochastic nature, which may hinder interpretability and give rise to misleading results. We propose an interpretable neural network model, stabilized using ensembling, with controlled variable selection for genetic studies. The merit of the proposed method includes: (1) flexible modelling of the non-linear effect of genetic variants to improve statistical power; (2) multiple knockoffs in the input layer to rigorously control false discovery rate; (3) hierarchical layers to substantially reduce the number of weight parameters and activations to improve computational efficiency; (4) de-randomized feature selection to stabilize identified signals. We evaluated the proposed method in extensive simulation studies and applied it to the analysis of Alzheimer disease genetics. We showed that the proposed method, when compared to conventional linear and nonlinear methods, can lead to substantially more discoveries.
-
-The method is a novel hierarchical deep neural network which is equipped with multiple sets of knockoffs with FDR guarantees. The main pipelines of the method is displayed in the following:
+Deep neural networks (DNN) have been used successfully in many scientific problems for their high prediction accuracy, but their application to genetic studies remains challenging due to their poor interpretability. We consider the problem of scalable, robust variable selection in DNN for the identification of putative causal genetic variants in genome sequencing studies. We identified a pronounced randomness in feature selection in DNN due to its stochastic nature, which may hinder interpretability and give rise to misleading results. We propose an interpretable neural network model, stabilized using ensembling, with controlled variable selection for genetic studies. The method is a novel hierarchical deep neural network which is equipped with multiple sets of knockoffs with FDR guarantees. The main pipelines of the method is displayed in the following:
 
 ![main flow](/../main/Images/Flowchart.jpg?raw=true "HiDe-MK pipeline")
 
@@ -25,15 +23,13 @@ RAM: 4+ GB
 
 CPU: 4+ cores, 3.3+ GHz
 
-We examined the codes on both local computer and remotly.
+We examined the codes on both local computer and remote.
 
 ### Software requirements
 
 #### OS Requirements
 
-The package is tested on Windows 10 and Mac OS operating systems. 
-
-The CRAN package should be compatible with Windows, Mac. Before setting up the HiDe-MK package, users should have R version 3.4.0 or higher, Python version 3.6.0, Keras 2.4 and Tensorflow 2.1 or Keras 2.6 and Tensorflow 2.6. Several packages and dependencies should be set up from CRAN and Python libraries as well.
+The package is tested on Windows 10 and Mac OS operating systems. We did not test it with Linux operating systems. Before setting up the HiDe-MK package, users should have R version 3.4.0 or higher, Python version 3.6.0, Keras 2.4 and Tensorflow 2.1 or Keras 2.6 and Tensorflow 2.6. Several packages and dependencies should be set up from CRAN and Python libraries as well.
 
 
 
