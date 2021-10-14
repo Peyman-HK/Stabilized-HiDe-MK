@@ -1,4 +1,4 @@
-# Code sample for "De-randomized hierarchical deep neural networks with multiple knockoffs (De-randomized HiDe-MK)"
+# "De-randomized hierarchical deep neural networks with multiple knockoffs (De-randomized HiDe-MK)"
 
 This repository contains code samples for "Deep neural networks with controlled variable selection for the identification of putative causal genetic variants". The method is a novel hierarchical deep neural network which is equipped with multiple sets of knockoffs with FDR guarantees. 
 
