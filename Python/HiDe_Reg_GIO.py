@@ -1,4 +1,4 @@
-# DeepPink
+# HiDe-MK
 import time
 import math
 import csv
