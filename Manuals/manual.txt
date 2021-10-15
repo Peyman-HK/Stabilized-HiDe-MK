@@ -1,0 +1,31 @@
+This manual helps for testing the proposed HiDe-MK for a classification example (dichotomous trait)
+
+Steps:
+1. Create a folder somewhere to keep the installed libraries.
+Let us call this folder: 
+C:/users/hide_mk/
+
+Download Hide_MK from Github and put its content into this folder. 
+
+2. Install Tensorflow version 2.6
+pip3 install --user tensorflow==2.6
+
+If with pip3 give error, please try with pip. . 
+
+3. Change the value for the variable 'outputDir' in the file 'HiDe_Class_GIO.py' which should be in the path 'C:/users/hide_mk/Python' to:
+
+outputDir = 'C:/users/hide_mk/Simulation data/ class/'
+
+This helps to read the datasets from the folder 'class' in in the file 'HiDe_Class_GIO.py'.
+
+
+4. Run the example python script 'HiDe_Class_GIO.py' which loads the following libraries:
+tensorflow/2.6
+keras/2.6
+numpy
+pandas
+SKlearn
+
+5- The output of this file is a csv file with name "FI_Class1.csv" which includes the feature importance scores (FIs). 
+
+You are done with learning from data and extracting FIs. This approaximately takes half an hour. 
