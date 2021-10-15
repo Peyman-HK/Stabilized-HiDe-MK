@@ -14,36 +14,24 @@ implode <- function(..., sep='') {
   paste(..., collapse=sep)
 }
 
-args = commandArgs(TRUE)
-ML_Type = args[1]   # Reg or Class
-Gene_Type = args[2]   # Common or Rare   
-Feature_Size<-as.numeric(eval(parse(text=args[3])))
-# LR_Type = args[4]  # DP or Lasso
-# Knock_Type = args[5]  # J or S (Joint or Separated)
-prt1 = '/oak/stanford/groups/zihuai/Peyman/DeepPinks/Mul_DP'
-prt_dest = prt1
-#prt1 =paste('/oak/stanford/groups/zihuai/Peyman/DeepPinks/Mul_DP/', collapse="/")
-vec <- c(prt1, ML_Type, Gene_Type, Feature_Size)
-print(vec)
-prt1 = implode(vec, sep='/')
-prt1 = prt1 + '/'
-print(prt1)
-indx <- Sys.getenv("SLURM_ARRAY_TASK_ID")
-print(indx)
+num_knock = 5 
 
-prt2 = 'Mul_MLP2featImport_' + indx + '.csv'
+path_data = 'C:/users/hosse/'
+path_data = 'C:/Users/hosse/OneDrive/Desktop/De-randomized-HiDe-MK-main/Simulation data/class/'
+indx <- 1
+
+prt2 = 'FI_Class_' + indx + '.csv'
 prt3 = 'Y_'+ indx +'.csv'
 prt4 = 'Beta_'+ indx +'.csv'
-path1 = prt1 + prt2
-path2 = prt1 + prt3
-path3 = prt1 + prt4
+path1 = path_data + prt2
+path2 = path_data + prt3
+path3 = path_data + prt4
+
 W_all <- read.csv(path1, header = FALSE, check.names = TRUE, as.is=TRUE, sep = ",")
 y <- read.csv(path2, header = FALSE, check.names = TRUE, as.is=TRUE, sep = ",")
 Beta <- read.csv(path3, header = FALSE, check.names = TRUE, as.is=TRUE, sep = ",")
 
-#W_all <- data.matrix(W_all [nrow(W_all),],rownames.force = NA)
 Feat_import <- data.matrix(W_all, rownames.force = NA)
-Feat_import2 <- t(W_all [nrow(W_all),])
 
 Beta <- as.numeric(Beta$V1)
 Temp = which( Beta!= 0, arr.ind=TRUE)
@@ -51,7 +39,7 @@ NZ_True = Temp
 #print(NZ_True)
 p = NROW(Beta)
 
-Size_Orig = NROW(Feat_import2)/6;
+Size_Orig = NROW(Feat_import)/(num_knock+1);
 print(Size_Orig)
 
 #####################################################################################
@@ -60,13 +48,7 @@ print(Size_Orig)
 
 #####################################################################################
 
-#Size_Orig = NROW(Beta);
-#Temp = ncol(W_all2)/6;
-#print(Temp)
-#Diff = Temp - Size_Orig;
-#W_all3 = W_all2[,1:(ncol(W_all2)-Diff)];
 
-###########################
 MK.threshold.byStat<-function (kappa,tau,M,fdr = val,Rej.Bound=10000){
   b<-order(tau,decreasing=T)
   c_0<-kappa[b]==0
@@ -131,16 +113,16 @@ MK.q.byStat<-function (kappa,tau,M,Rej.Bound=10000){
 
 ###########################
 
-T_0 = Feat_import2[1:Size_Orig,]
+T_0 = Feat_import[1:Size_Orig,]
 Temp = Size_Orig+1
-T_k = t(Feat_import2[Temp:NROW(Feat_import2),])
+T_k = t(Feat_import[Temp:NROW(Feat_import),])
 T_k <- t(matrix(T_k, nrow  = 5, byrow = TRUE))
 #Diff = Size_Orig - p;
 #T_0 = T_0[1:p]
 #T_k = T_k[1:p,1:5]
 
-T_0 = T_0**2; 
-T_k = T_k**2; 
+T_0 = abs(T_0); 
+T_k = abs(T_k); 
 
 
 Kappa_Tau = MK.statistic(T_0,T_k,method='median')
@@ -175,11 +157,10 @@ print(Power)
 
 new_lineJ = t(c(FDR,Power))
 
-Destination <- prt_dest + '/'+ ML_Type + '/'+ Gene_Type + '/' + 'Stat_Mul_DPJ_' + Feature_Size + '.csv'
+Destination <- path_data + 'Stat_knockoff' + '.csv'
 if (file.exists(Destination) == FALSE) 
   file.create(file=Destination)
 
 write.table(new_lineJ,file=Destination, append=TRUE, sep=',', eol="\n", col.names=F, row.names=F)
-
 Stat <- read.csv(file=Destination, header = FALSE, check.names = TRUE, as.is=TRUE, sep = ",")
 colMeans(Stat)
