@@ -48,7 +48,11 @@ In the folder manuals, we explained step by step how to run the code to observe 
 
 ## Citations
 
-The KnockoffScreen method was first proposed in Nature communications journal at: https://www.nature.com/articles/s41467-021-22889-4
-This method is computationally efficient and allowed us to generate knockoffs quickly. 
+The paper titled by "Deep neural networks with controlled variable selection for the identification of putative causal genetic variants
+Peyman H. Kassani, Fred Lu, Yann Le Guen, Zihuai He" is in Arxiv:
+
+https://arxiv.org/abs/2109.14719
+
+To extract the knockoff features we used KnockoffScreen method which was first proposed in Nature communications journal at: https://www.nature.com/articles/s41467-021-22889-4
 
 Any question, please feel free to ask me at: peymanhk@stanford.edu
