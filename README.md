@@ -48,8 +48,7 @@ In the folder manuals, we explained step by step how to run the code to observe 
 
 ## Citations
 
-The paper titled by "Deep neural networks with controlled variable selection for the identification of putative causal genetic variants
-Peyman H. Kassani, Fred Lu, Yann Le Guen, Zihuai He" is in Arxiv:
+The paper titled by "Deep neural networks with controlled variable selection for the identification of putative causal genetic variants" is in Arxiv:
 
 https://arxiv.org/abs/2109.14719
 
