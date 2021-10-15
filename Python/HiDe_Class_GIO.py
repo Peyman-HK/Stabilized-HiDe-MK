@@ -290,7 +290,7 @@ for row_ind in range(Gradients_All.shape[1]):
         avg_all[row_ind,col_ind] = np.mean(Gradients_All[:,row_ind,col_ind]) 
 
 Feat_Import = np.hstack((avg_all[:,0],avg_all[:,1],avg_all[:,2],avg_all[:,3],avg_all[:,4],avg_all[:,5]));
-np.savetxt('FI_Class' + str(indx)+ '.csv', Feat_Import, delimiter=",")
+np.savetxt('FI_Class_' + str(indx)+ '.csv', Feat_Import, delimiter=",")
 
 print("Opt_epochs, Best_coeff, Best_LR, AUC_All, Average_AUC, np.max(Average_AUC), CPU_Time, indx")
 METRICS_HMDP_New = [Opt_epochs, Best_coeff, Best_LR, AUC_All, Average_AUC, np.max(Average_AUC), CPU_Time, indx]; 
