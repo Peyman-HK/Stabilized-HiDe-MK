@@ -54,4 +54,4 @@ https://arxiv.org/abs/2109.14719
 
 To extract the knockoff features we used KnockoffScreen method which was first proposed in Nature communications journal at: https://www.nature.com/articles/s41467-021-22889-4
 
-Any question, please feel free to ask me at: peymanhk@stanford.edu
+Please feel free to write me your questions at: peymanhk@stanford.edu
