@@ -41,9 +41,12 @@ pip3 install keras==2.6
 ### Install R dependencies
 install.packages(c('glmnet', 'data.matrix', 'knockoff'))
 
+## Results
 
-To obtain the FDR and power through the feature importance score learned by HiDe-MK, you should run the R script FDR_Pow_MK.R. The target FDR levels are set from 0.01 to 0.20 with step size 0.01. 
- 
+In the folder manuals, we explained step by step how to run the code to observe results from both learning through HiDe-MK python code and obtaining FDR-Power through R scripts. To obtain the FDR and power through the feature importance score learned by HiDe-MK, you should run the R script FDR_Pow_MK.R. The target FDR levels are set from 0.01 to 0.20 with step size 0.01. 
+
+## Citations
+
 The KnockoffScreen method was first proposed in Nature communications journal at: https://www.nature.com/articles/s41467-021-22889-4
 This method is computationally efficient and allowed us to generate knockoffs quickly. 
 
