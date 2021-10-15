@@ -29,3 +29,24 @@ SKlearn
 5- The output of this file is a csv file with name "FI_Class1.csv" which includes the feature importance scores (FIs). 
 
 You are done with learning from data and extracting FIs. This approaximately takes half an hour. 
+
+-> How to get FDR and Power through the R scrip: 
+
+6- First, install the following packages throgu the R: 
+
+install.packages("glmnet")
+install.packages("knockoff")
+install.packages("data.table")
+
+7- Then, open the file "FDR_Pow_MK" throug the folder 'R' of the downloaded package. 
+
+8- Again, change the line 'path_data' in this file to read the data and stored FIs which was learned by the neuo-net. 
+
+9- Run this R script and you get FDR and Power for different target FDR levels from 0.01 to 0.20 by step size 0.01. 
+
+10- A csv file "Stat_knockoff.csv" in the folder "Simulation data" is generated which includes a row with 40 values. The first 20 values are observed FDRs and the second 20 values are emprical power for the corresponding FDRs. 
+
+11- Done!
+
+Please feel free to ask me your question through: peymanhk@stanford.edu
+ 
