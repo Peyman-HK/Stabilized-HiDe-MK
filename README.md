@@ -47,7 +47,7 @@ install.packages(c('glmnet', 'data.matrix', 'knockoff'))
 In the folder manuals, we explained step by step how to run the code to observe results from both learning through HiDe-MK python code and obtaining FDR-Power through R scripts. To obtain the FDR and power through the feature importance score learned by HiDe-MK, you should run the R script FDR_Pow_MK.R. The target FDR levels are set from 0.01 to 0.20 with step size 0.01. 
 
 
-[alt text](https://github.com/Peyman-HK/De-randomized-HiDe-MK/blob/main/Images/Manhattan_plot.jpg)
+![Main flow](/../main/Images/Manhattan_plot.jpg?raw=true "Manhattan plot")
 
 
 ## Citations
