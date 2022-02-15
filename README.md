@@ -1,4 +1,4 @@
-# "Stabilized hierarchical deep neural networks with multiple knockoffs (De-randomized HiDe-MK)"
+# "Stabilized hierarchical deep neural networks with multiple knockoffs (Stabilized HiDe-MK)"
 
 ## Overview 
 Deep neural networks (DNN) have been used successfully in many scientific problems for their high prediction accuracy, but their application to genetic studies remains challenging due to their poor interpretability. We consider the problem of scalable, robust variable selection in DNN for the identification of putative causal genetic variants in genome sequencing studies. We identified a pronounced randomness in feature selection in DNN due to its stochastic nature, which may hinder interpretability and give rise to misleading results. We propose an interpretable neural network model, stabilized using ensembling, with controlled variable selection for genetic studies. The method is a novel hierarchical deep neural network which is equipped with multiple sets of knockoffs with FDR guarantees. The main pipelines of the method is displayed in the following:
@@ -47,7 +47,7 @@ install.packages(c('glmnet', 'data.matrix', 'knockoff'))
 In the folder manuals, we explained step by step how to run the code to observe results from both learning through stabilized HiDe-MK python code, and obtaining FDR-Power through R scripts. To obtain the FDR and power through the feature importance score learned by stabilized HiDe-MK, you should run the R script FDR_Pow_MK.R. The target FDR levels are set from 0.01 to 0.20 with step size 0.01. 
 
 
-We also uploaded a tabel, "Table_Summary_TopMed_Imputed_Median.csv", obtained through the real data analysis which includes feature importance scores for each genetic variant. Through the "Manhattan plot.ipyng" and using jupyter notebook, the following plot can be displayed: 
+We also uploaded a tabel, "Table_summary_HF_KS_Lancet.csv", obtained through the real data analysis which includes q-values for each genetic variant. Through the "Manhattan plot.ipyng" and using jupyter notebook, the following plot can be displayed: 
 
 ![Main flow](/../main/Images/Manhattan_plot.jpg?raw=true "Manhattan plot")
 
