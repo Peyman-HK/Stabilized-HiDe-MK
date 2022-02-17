@@ -10,9 +10,7 @@ library(glmnet)
   }
 }
 
-implode <- function(..., sep='') {
-  paste(..., collapse=sep)
-}
+source('/home/users/peymanhk/PROJECT_2/Simulated/GOI/KnockoffScreen_AL_vMar16-updated.R')
 
 num_knock = 5 
 
