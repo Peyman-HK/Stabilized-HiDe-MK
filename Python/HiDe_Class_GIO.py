@@ -73,23 +73,23 @@ outputDir = 'C:/Users/15043/Stabilized_HiDe_MK/'
 dataDir = 'C:/Users/15043/Stabilized_HiDe_MK/Dicho/'
 #######################################
         
-prt1 = 'X_orig_'+str(indx)+'.csv'
-prt2 = 'X_ko1_'+str(indx)+'.csv'; prt3 = 'X_ko2_'+str(indx)+'.csv'; prt4 = 'X_ko3_'+str(indx)+'.csv'
-prt5 = 'X_ko4_'+str(indx)+'.csv'; prt6 = 'X_ko5_'+str(indx)+'.csv';
-prt7 = 'Y_'+str(indx)+'.csv'; prt8 = 'Beta_'+str(indx)+'.csv';
-output_path1 = dataDir + prt1
-output_path2 = dataDir + prt2; output_path3 = dataDir + prt3; output_path4 = dataDir + prt4;
-output_path5 = dataDir + prt5; output_path6 = dataDir + prt6;
-output_path7 = dataDir + prt7; output_path8 = dataDir + prt8
+prt0 = 'X_orig_'+str(indx)+'.csv'
+prtk1 = 'X_ko1_'+str(indx)+'.csv'; prtk2 = 'X_ko2_'+str(indx)+'.csv'; prtk3 = 'X_ko3_'+str(indx)+'.csv'
+prtk4 = 'X_ko4_'+str(indx)+'.csv'; prtk5 = 'X_ko5_'+str(indx)+'.csv';
+prtY = 'Y_'+str(indx)+'.csv'; prtBeta = 'Beta_'+str(indx)+'.csv';
+output_pathX0 = dataDir + prt0
+output_pathK1 = dataDir + prtk1; output_pathK2 = dataDir + prtk2; output_pathK3 = dataDir + prtk3;
+output_pathK4 = dataDir + prtk4; output_pathK5 = dataDir + prtk5;
+output_pathY = dataDir + prtY; output_path_Beta = dataDir + prtBeta
 
-X_orig = pd.read_csv(output_path1, header = None).values.astype(np.float64);
-X_ko1 = pd.read_csv(output_path2, header = None).values.astype(np.float64);
-X_ko2 = pd.read_csv(output_path3, header = None).values.astype(np.float64);
-X_ko3 = pd.read_csv(output_path4, header = None).values.astype(np.float64);
-X_ko4 = pd.read_csv(output_path5, header = None).values.astype(np.float64);
-X_ko5 = pd.read_csv(output_path6, header = None).values.astype(np.float64);
-Y = pd.read_csv(output_path7, header = None).values.astype(np.float64);
-Beta = pd.read_csv(output_path8, header = None).values.astype(np.float64);
+X_orig = pd.read_csv(output_pathX0, header = None).values.astype(np.float64);
+X_ko1 = pd.read_csv(output_pathK1, header = None).values.astype(np.float64);
+X_ko2 = pd.read_csv(output_pathK2, header = None).values.astype(np.float64);
+X_ko3 = pd.read_csv(output_pathK3, header = None).values.astype(np.float64);
+X_ko4 = pd.read_csv(output_pathK4, header = None).values.astype(np.float64);
+X_ko5 = pd.read_csv(output_pathK5, header = None).values.astype(np.float64);
+Y = pd.read_csv(output_pathY, header = None).values.astype(np.float64);
+Beta = pd.read_csv(output_path_Beta, header = None).values.astype(np.float64);
 
 print("Size of the original feature is: %d x %d." %(X_orig.shape))
 print("Size of the knockoff feature is: %d x %d." %(X_ko1.shape))
