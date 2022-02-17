@@ -1,6 +1,5 @@
-THIS REPO IS BEING UPDATED. WE WILL BE BACK BY TOMORROW FEB 16
+
 # "Stabilized hierarchical deep neural networks with multiple knockoffs (Stabilized HiDe-MK)"
-THIS REPO IS BEING UPDATED. WE WILL BE BACK BY TOMORROW FEB 16
 
 ## Overview 
 Deep neural networks (DNN) have been used successfully in many scientific problems for their high prediction accuracy, but their application to genetic studies remains challenging due to their poor interpretability. We consider the problem of scalable, robust variable selection in DNN for the identification of putative causal genetic variants in genome sequencing studies. We identified a pronounced randomness in feature selection in DNN due to its stochastic nature, which may hinder interpretability and give rise to misleading results. We propose an interpretable neural network model, stabilized using ensembling, with controlled variable selection for genetic studies. The method is a novel hierarchical deep neural network which is equipped with multiple sets of knockoffs with FDR guarantees. The main pipelines of the method is displayed in the following:
