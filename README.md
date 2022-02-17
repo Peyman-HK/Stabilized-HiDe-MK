@@ -59,7 +59,7 @@ The paper titled by "Deep neural networks with controlled variable selection for
 
 https://arxiv.org/abs/2109.14719
 
-To extract the knockoff features we used KnockoffScreen method which was first proposed in Nature communications journal at: https://www.nature.com/articles/s41467-021-22889-4
+To extract the knockoff features we used KnockoffScreen method which was first proposed in journal of nature communications at: https://www.nature.com/articles/s41467-021-22889-4
 
 Please feel free to write me your questions at: peymanhk@stanford.edu
 
