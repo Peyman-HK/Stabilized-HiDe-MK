@@ -10,7 +10,7 @@ library(glmnet)
   }
 }
 
-source('/home/users/peymanhk/PROJECT_2/Simulated/GOI/KnockoffScreen_AL_vMar16-updated.R')
+source('/home/users/peymanhk/PROJECT_2/Simulated/GOI/KnockoffScreen_updated.R')
 
 prt_result = '/home/users/peymanhk/PROJECT_2/Simulated/GOI/'
 
