@@ -12,13 +12,25 @@ library(glmnet)
 
 source('/home/users/peymanhk/PROJECT_2/Simulated/GOI/KnockoffScreen_AL_vMar16-updated.R')
 
-num_knock = 5 
+prt_result = '/home/users/peymanhk/PROJECT_2/Simulated/GOI/'
+
+
+ML_Type = 'Class' # or 'Reg'
+
+M = 5
 
 path_data = 'C:/users/hosse/'
 path_data = 'C:/Users/hosse/OneDrive/Desktop/De-randomized-HiDe-MK-main/Simulation data/class/'
 indx <- 1
 
-prt2 = 'FI_Class_' + indx + '.csv'
+#############################
+if (ML_Type == 'Class'){
+prt2 = 'FI_Class.csv'
+} else {
+prt2 = 'FI_Reg.csv'
+}
+############################
+
 prt3 = 'Y_'+ indx +'.csv'
 prt4 = 'Beta_'+ indx +'.csv'
 path1 = path_data + prt2
@@ -37,7 +49,7 @@ NZ_True = Temp
 #print(NZ_True)
 p = NROW(Beta)
 
-Size_Orig = NROW(Feat_import)/(num_knock+1);
+Size_Orig = NROW(Feat_import)/(M + 1);
 print(Size_Orig)
 
 #####################################################################################
@@ -46,78 +58,10 @@ print(Size_Orig)
 
 #####################################################################################
 
-
-MK.threshold.byStat<-function (kappa,tau,M,fdr = val,Rej.Bound=10000){
-  b<-order(tau,decreasing=T)
-  c_0<-kappa[b]==0
-  ratio<-c();temp_0<-0
-  for(i in 1:length(b)){
-    #if(i==1){temp_0=c_0[i]}
-    temp_0<-temp_0+c_0[i]
-    temp_1<-i-temp_0
-    temp_ratio<-(1/M+1/M*temp_1)/max(1,temp_0)
-    ratio<-c(ratio,temp_ratio)
-    if(i>Rej.Bound){break}
-  }
-  ok<-which(ratio<=fdr)
-  if(length(ok)>0){
-    #ok<-ok[which(ok-ok[1]:(ok[1]+length(ok)-1)<=0)]
-    return(tau[b][ok[length(ok)]])
-  }else{return(Inf)}
-}
-
-MK.statistic<-function (T_0,T_k,method='median'){
-  T_0<-as.matrix(T_0);T_k<-as.matrix(T_k)
-  T.temp<-cbind(T_0,T_k)
-  T.temp[is.na(T.temp)]<-0
-  kappa<-apply(T.temp,1,which.max)-1
-  if(method=='max'){tau<-apply(T.temp,1,max)-apply(T.temp,1,max.nth,n=2)}
-  if(method=='median'){
-    Get.OtherMedian<-function(x){median(x[-which.max(x)])}
-    tau<-apply(T.temp,1,max)-apply(T.temp,1,Get.OtherMedian)
-  }
-  KS.stat<-cbind(kappa,tau)
-  return(KS.stat)
-}
-
-MK.threshold<-function (T_0,T_k, fdr = val,method='median',Rej.Bound=10000){
-  stat<-MK.statistic(T_0,T_k,method=method)
-  kappa<-stat[,1];tau<-stat[,2]
-  t<-MK.threshold.byStat(kappa,tau,M=ncol(T_k),fdr=fdr,Rej.Bound=Rej.Bound)
-  return(t)
-}
-
-MK.q.byStat<-function (kappa,tau,M,Rej.Bound=10000){
-  b<-order(tau,decreasing=T)
-  c_0<-kappa[b]==0
-  #calculate ratios for top Rej.Bound tau values
-  ratio<-c();temp_0<-0
-  for(i in 1:length(b)){
-    #if(i==1){temp_0=c_0[i]}
-    temp_0<-temp_0+c_0[i]
-    temp_1<-i-temp_0
-    temp_ratio<-(1/M+1/M*temp_1)/max(1,temp_0)
-    ratio<-c(ratio,temp_ratio)
-    if(i>Rej.Bound){break}
-  }
-  #calculate q values for top Rej.Bound values
-  q<-rep(1,length(tau))
-  for(i in 1:length(b)){
-    q[b[i]]<-min(ratio[i:min(length(b),Rej.Bound)])*c_0[i]+1-c_0[i]
-    if(i>Rej.Bound){break}
-  }
-  return(q)
-}
-
-###########################
-
 T_0 = Feat_import[1:Size_Orig,]
 Temp = Size_Orig+1
 T_k = t(Feat_import[Temp:NROW(Feat_import),])
-T_k <- t(matrix(T_k, nrow  = 5, byrow = TRUE))
-#Diff = Size_Orig - p;
-#T_0 = T_0[1:p]
-#T_k = T_k[1:p,1:5]
+T_k <- t(matrix(T_k, nrow  = M, byrow = TRUE))
 
 T_0 = abs(T_0); 
 T_k = abs(T_k); 
@@ -129,7 +73,7 @@ print(Kappa_Tau)
 Kappa = Kappa_Tau[,1]
 Tau   = Kappa_Tau[,2]
 
-M = 5
+
 Target_FDR <-seq(0.01, 0.2, by=0.01) 
 
 count <- 0
@@ -154,11 +98,17 @@ print(FDR)
 print(Power)
 
 new_lineJ = t(c(FDR,Power))
+if (ML_Type == 'Class'){
+Destination <- prt_result + '/' + 'Stat_stabilize_HiDe_MK_Class.csv'
+} else {
+Destination <- prt_result + '/' + 'Stat_stabilize_HiDe_MK_Reg.csv'
+}
 
-Destination <- path_data + 'Stat_knockoff' + '.csv'
 if (file.exists(Destination) == FALSE) 
   file.create(file=Destination)
 
 write.table(new_lineJ,file=Destination, append=TRUE, sep=',', eol="\n", col.names=F, row.names=F)
 Stat <- read.csv(file=Destination, header = FALSE, check.names = TRUE, as.is=TRUE, sep = ",")
 colMeans(Stat)
+print("Done!!")
+
