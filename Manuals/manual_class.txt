@@ -3,20 +3,20 @@ This manual helps for testing the proposed HiDe-MK for a classification example 
 Steps:
 1. Create a folder somewhere to keep the installed libraries.
 Let us call this folder: 
-C:/users/hide_mk/
+C:/users/De-randomized-HiDe-MK/
 
-Download Hide_MK from Github and put its content into this folder. 
+Download  De-randomized-HiDe-MK from Github and put its content into this folder. 
 
 2. Install Tensorflow version 2.6
 pip3 install --user tensorflow==2.6
 
-If with pip3 give error, please try with pip. . 
+If pip3 gives error, please try with pip or conda.  
 
-3. Change the value for the variable 'outputDir' in the file 'HiDe_Class_GIO.py' which should be in the path 'C:/users/hide_mk/Python' to:
+3. Change the value for the variable 'outputDir' in line 72 of file 'HiDe_Class_GIO.py' in the path 'C:/users/hide_mk/Python' to:
 
-outputDir = 'C:/users/hide_mk/Simulation data/ class/'
+outputDir = 'C:/users/De-randomized-HiDe-MK/Simulation data/class/'
 
-This helps to read the datasets from the folder 'class' in in the file 'HiDe_Class_GIO.py'.
+This fix the address of data files.
 
 
 4. Run the example python script 'HiDe_Class_GIO.py' which loads the following libraries:
@@ -26,27 +26,27 @@ numpy
 pandas
 SKlearn
 
-5- The output of this file is a csv file with name "FI_Class1.csv" which includes the feature importance scores (FIs). 
+5- The output of this file is a csv file with name "FI_Class_1.csv" which is the vector of the feature importance scores (FIs). 
 
-You are done with learning from data and extracting FIs. This approaximately takes half an hour. 
+You are done with learning from data and extracting FIs. This approaximately takes an hour to two hours. 
 
--> How to get FDR and Power through the R scrip: 
+
+---> How to get FDR and Power through the R scrip:  <---
 
 6- First, install the following packages throgu the R: 
 
-install.packages("glmnet")
-install.packages("knockoff")
-install.packages("data.table")
+install.packages(c('glmnet', 'data.matrix', 'knockoff'))
 
-7- Then, open the file "FDR_Pow_MK" throug the folder 'R' of the downloaded package. 
+7- Then, open the file "FDR_Pow_MK.R" throug the folder 'R' of the downloaded package. 
 
-8- Again, change the line 'path_data' in this file to read the data and stored FIs which was learned by the neuo-net. 
+8- Again, change the line 'path_data' (line 22) in this file to read the FIs (which was learned by the neuo-net), Beta, and Y. 
 
 9- Run this R script and you get FDR and Power for different target FDR levels from 0.01 to 0.20 by step size 0.01. 
 
-10- A csv file "Stat_knockoff.csv" in the folder "Simulation data" is generated which includes a row with 40 values. The first 20 values are observed FDRs and the second 20 values are emprical power for the corresponding FDRs. 
+10- A csv file "Stat_stabilize_HiDe_MK_Class.csv" in the folder "Simulation data" is generated which includes a row with 40 values. 
+The first 20 values are observed/empricial FDRs and the second 20 values are the emprical power for the corresponding FDRs. 
 
 11- Done!
 
-Please feel free to ask me your question through: peymanhk@stanford.edu
+Please feel free to ask me your questions through: peymanhk@stanford.edu  / phkassani@gmail.com
  

@@ -25,9 +25,9 @@ indx <- 1
 
 #############################
 if (ML_Type == 'Class'){
-prt2 = 'FI_Class.csv'
+prt2 = 'FI_Class_' + indx + '.csv'
 } else {
-prt2 = 'FI_Reg.csv'
+prt2 = 'FI_Reg_' + indx + '.csv'
 }
 ############################
 
