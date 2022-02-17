@@ -1,4 +1,4 @@
-# HiDe-MK
+# Stabilized HiDe-MK
 import time
 import math
 import csv
@@ -29,25 +29,50 @@ from sklearn.model_selection import KFold
 from sklearn.metrics import accuracy_score, roc_auc_score,mean_squared_error,mean_absolute_error
 from sklearn.model_selection import train_test_split
 
+################
+Param_Space = pd.read_csv('C:/Users/15043/Stabilized_HiDe_MK/Param_SKAT2.csv', header = 0);
+################
 
-#tf.compat.v1.enable_eager_execution()
+
+num_epochs = int(100)
+num_param = int(20) #len(CoeffS)
+cuttoff_point = int(50)#num_epochs*num_param
+
+
+def _index_predictions(predictions, labels):
+    '''
+    Indexes predictions, a [batch_size, num_classes]-shaped tensor,
+    by labels, a [batch_size]-shaped tensor that indicates which
+    class each sample should be indexed by.
+
+    Args:
+        predictions: A [batch_size, num_classes]-shaped tensor. The input to a model.
+        labels: A [batch_size, num_classes]-shaped tensor.
+                The tensor used to index predictions, in one-hot encoding form.
+    Returns:
+        A tensor of shape [batch_size] representing the predictions indexed by the labels.
+    '''
+    current_batch_size = tf.shape(predictions)[0]
+    sample_indices = tf.range(current_batch_size)
+    sparse_labels  = tf.argmax(labels, axis=-1)
+    indices_tensor = tf.stack([sample_indices, tf.cast(sparse_labels, tf.int32)], axis=1)
+    predictions_indexed = tf.gather_nd(predictions, indices_tensor)
+    return predictions_indexed
+
+
 indx = 1
 batch_size = 1024
 validation_split = 0
 FILTER = 8;
-Kernel_Size = 5; 
-STRIDE = 5; 
-################
-Param_Space = pd.read_csv('C:/users/hosse/Param_SKAT.csv', header = 0);
-################
-
-################################################################################
-ML_Type = 'Class'
-outputDir = 'C:/users/hosse/reg/'
-dataDir = outputDir
-################################################################################
+KERNEL = 25; 
+STRIDE = 25; 
 
 
+#######################################
+outputDir = 'C:/Users/15043/Stabilized_HiDe_MK/'
+dataDir = 'C:/Users/15043/Stabilized_HiDe_MK/Dicho/'
+#######################################
+        
 prt1 = 'X_orig_'+str(indx)+'.csv'
 prt2 = 'X_ko1_'+str(indx)+'.csv'; prt3 = 'X_ko2_'+str(indx)+'.csv'; prt4 = 'X_ko3_'+str(indx)+'.csv'
 prt5 = 'X_ko4_'+str(indx)+'.csv'; prt6 = 'X_ko5_'+str(indx)+'.csv';
@@ -71,7 +96,6 @@ print("Size of the knockoff feature is: %d x %d." %(X_ko1.shape))
 print("Size of the target is: %d x %d." %(Y.shape))
 print("Size of the output weight is: %d x %d." %(Beta.shape))
 
-
 Num_knock = 5;
 bias = True;
 num_row = X_orig.shape[0];
@@ -86,56 +110,48 @@ x3D_all[:, :, 4] = X_ko4;
 x3D_all[:, :, 5] = X_ko5; 
 x3D_all.shape
 
-
-x3D_all = (x3D_all-np.mean(x3D_all))/np.std(x3D_all);
-Y = (Y-np.mean(Y))/np.std(Y);
-
-############ Zero-Padding ###############################
-Var_dim = X_orig.shape[1]
-res = Var_dim%STRIDE
+######## Zero-Padding #########
+Orig_dim = X_orig.shape[1]
+res = Orig_dim%STRIDE
 print(f'The residual for zero-padding is: {res}')
 if res != 0:
     new_row = x3D_all.shape[0];
     new_col = STRIDE -res;
-    x_new = np.zeros((new_row, new_col,6));
+    x_new = np.zeros((new_row, new_col,Num_knock+1));
     x3D_all = np.hstack((x3D_all,x_new)); 
     
-Num_group = int(x3D_all.shape[1]/STRIDE); 
-print(f'Number of groups is: {Num_group}')
 print(f'number of features/columns after zero padding: {x3D_all.shape[1]}')
-##########################################################
+###############################
+
+del X_orig, X_ko1, X_ko2, X_ko3, X_ko4, X_ko5
 
 pVal = x3D_all.shape[1];
 Num_instance = x3D_all.shape[0];
 seed = 457
-bias = True;
 
 def show_layer_info(layer_name, layer_out):
     print('[layer]: %s\t[shape]: %s \n' % (layer_name,str(layer_out.get_shape().as_list())))
 
-def getModelLocalEq(pVal, coeff1, lr, Drop_Rate):
+def getModelLocalEq(pVal, coeff1, lr):
     print('The current coeff is')
     print(coeff1)
     
-    input = Input(name='input', shape=(pVal, Num_knock+1));
-    show_layer_info('Input', input);
+    input = Input(name='Input1', shape=(pVal, Num_knock+1));
+    show_layer_info('Input1', input);
 
-    Dropout1 = Dropout(Drop_Rate)(input)
-    show_layer_info('Dropout', Dropout1);
-
-    local1 = LocallyConnected1D(1,1, use_bias=bias, kernel_initializer=Constant(value=0.1), activation='elu', kernel_regularizer=tf.keras.regularizers.l1(coeff1))(Dropout1); 
+    local1 = LocallyConnected1D(1,1, use_bias=bias, kernel_initializer=Constant(value=0.1), activation='elu', kernel_regularizer=tf.keras.regularizers.l1(coeff1))(input); 
     show_layer_info('LocallyConnected1D', local1); 
 
-    Dropout2 = Dropout(Drop_Rate)(local1)
-    show_layer_info('Dropout', Dropout2);    
-           
-    local2 = LocallyConnected1D(8,Kernel_Size, strides=STRIDE, use_bias=bias,kernel_initializer='glorot_normal', activation='elu')(Dropout2);
+    Dropout1 = Dropout(0.1)(local1)
+    show_layer_info('Dropout', Dropout1);  
+       
+    local2 = LocallyConnected1D(FILTER, KERNEL, strides=STRIDE, use_bias=bias,kernel_initializer='glorot_normal', activation='elu')(Dropout1);
     show_layer_info('LocallyConnected1D', local2); 
-         
+
     flat = Flatten()(local2); 
     show_layer_info('Flatten', flat);            
 
-    dense1 = Dense(30, activation='elu',use_bias=bias,kernel_initializer='glorot_normal')(flat);
+    dense1 = Dense(50, activation='elu',use_bias=bias,kernel_initializer='glorot_normal')(flat); 
     show_layer_info('Dense', dense1);  
    
     out_ = Dense(1, activation='linear', use_bias=bias, kernel_initializer='glorot_normal')(dense1) 
@@ -144,14 +160,10 @@ def getModelLocalEq(pVal, coeff1, lr, Drop_Rate):
     opt = Adam(learning_rate=lr) 
     model = Model(inputs=input, outputs=out_)
     
-    model.compile(loss='mse', optimizer=opt, metrics=['mae','mse']) 
+    model.compile(loss='mse', optimizer=opt, metrics=[tf.keras.metrics.AUC()]) 
 
     return model
 
-
-def train_DNN(model, X, y, x_test, y_test, callbacks):
-    model.fit(X, y, epochs=num_epochs, batch_size=batch_size, verbose=0, validation_data=(x_test, y_test), callbacks=get_callbacks());   
-    return model;
 
 def test_DNN(model, X, y):
     return mean_squared_error(y, model.predict(X));
@@ -161,167 +173,185 @@ def predict_DNN(model, X, y):
 
 
 num_folds = 5       
-kf = KFold(n_splits=num_folds)
-all_kfold = []
+kf = KFold(n_splits=num_folds, random_state=869, shuffle=True)
 kf.get_n_splits(x3D_all)
 print(kf)  
-KFold(n_splits=num_folds, random_state=869, shuffle=True)
-pred_train = []
-pred_test = []
+#KFold(n_splits=num_folds, random_state=869, shuffle=True)
+
+train_loss_All=[]; train_AUC_All=[];Val_loss_All=[];Val_mse_All=[];
+AA = (num_param, num_epochs)
+#BB = (num_param)
+SS = (num_param,num_folds)
+AUC_te = []; 
+AVG_Val_Loss = np.zeros(AA)
+AVG_Val_mse = np.zeros(AA)
+#AVG_Val_mse = np.zeros(num_param)
+print('The shape of AVG_Val_Loss is : ',AVG_Val_Loss.shape)
+print('The shape of AVG_Val_mse is : ',AVG_Val_mse.shape)
+print('The shape of SS is : ',SS)
+print('The shape of AA is : ',AA)
 
 
-## Increasing this parameter examines more sets of DNN's hyperparameters. 
-## Therefore, training time increases but power also increases. 
-#################################
-num_coef = 2 #len(CoeffS)
-#################################
-
-
-SS = (num_folds, num_coef)
-MSE_te = np.zeros(SS)
-# Define per-fold score container
-MSE_per_fold = []
-
-DNN = getModelLocalEq(x3D_all.shape[1], 1e-8, 1e-9, 0.2);  # lrS[int(val)]
+DNN = getModelLocalEq(x3D_all.shape[1], 1e-3, 1e-3);   
 DNN.summary()
 
-################################################################################
-
-#####################     Re-Train with best parameters    #####################
-
-################################################################################  
 
 def get_callbacks():
-    callbacks =[EarlyStopping(monitor='val_loss', patience = 200, verbose=0, mode='min')]
+    callbacks =[EarlyStopping(monitor='loss', patience = 1000, verbose=0, mode='min')]
     return callbacks
 
 
+np.random.seed(seed)
 start = time.time()
 
-for ii in range(0, num_coef): #val in lrS:
-    print('The current set of hyperparameters to validate is',ii+1)
-    lr = Param_Space['Learning_Rate'].iat[ii]
-    CoeffS = Param_Space['L1_Norm'].iat[ii]
-    num_epochs = int(Param_Space['Epoch'].iat[ii])
-    Drop_Rate = Param_Space['Drop_Rate'].iat[ii]+0.2 
-
-    print("_" * 20) 
-    print("lr, CoeffS, num_epochs, Drop_Rate, ii")
-    print([lr, CoeffS, num_epochs, Drop_Rate, ii])
-    print("_" * 20) 
-   
-    fold_no = 1
-    seed = 457 #24 * (2*indx+1)
-    print(seed)
-    #np.random.seed(seed)
-    for train_index, test_index in kf.split(x3D_all):
-
-        X_train, X_test = x3D_all[train_index], x3D_all[test_index]
-        y_train, y_test = Y[train_index], Y[test_index] 
-        
+for param_counter in range(0, num_param): # Loop for different parameter set
+    print('The current paramter counter is: ',param_counter+1)
+    lr = Param_Space['Learning_Rate'].iat[param_counter]
+    CoeffS = Param_Space['L1_Norm'].iat[param_counter]
+    print("*" * 40) 
+    print("lr, CoeffS, num_epochs, Num_param")
+    print([lr, CoeffS, num_epochs, param_counter+1])
+    print("*" * 40)     
+    fold_no = 0
+    Val_loss_All=[]; Val_mse_All = [];    
+    for train_index, val_index in kf.split(x3D_all):  # Loop for different 5 folds            
+        X_train, X_val = x3D_all[train_index], x3D_all[val_index]
+        y_train, y_val = Y[train_index], Y[val_index]         
         ## learning
-        DNN = getModelLocalEq(pVal, CoeffS, lr, Drop_Rate);   # lrS[int(val)]
         print("_" * 50) 
-        print(f'Training for fold {fold_no} ...') 
-        
-        print("_" * 20) 
-        print("lr, CoeffS, num_epochs, Drop_Rate, ii")
-        print([lr, CoeffS, num_epochs, Drop_Rate, ii])
-        print("_" * 20)
-        DNN = train_DNN(DNN, X_train, y_train, X_test, y_test, callbacks=get_callbacks); #, myCallback
-       
-        y_score_te = predict_DNN(DNN, X_test, y_test); 
-        X_Test_True_Pred = np.concatenate((y_test,y_score_te),axis=1)                     
-        MSE_te[fold_no-1, ii] = mean_squared_error(y_test, y_score_te)        
-        
-        print(f'MSE Test Score for fold {fold_no} and L1 Regularized {CoeffS}: {MSE_te[fold_no-1, ii]}')
-        MSE_per_fold.append(MSE_te[fold_no-1, ii])    
-        del DNN
+        print(f'Training for fold {fold_no+1} ...') 
+        print('The current paramter counter is: ',param_counter+1) 
+        DNN = getModelLocalEq(x3D_all.shape[1], CoeffS, lr);
+        history = DNN.fit(X_train, y_train, epochs=num_epochs, 
+                          batch_size=batch_size, validation_data=(X_val, y_val), verbose=0);              
+        print(history.history.keys())
+        Val_loss = history.history[list(history.history.keys())[2]]
+        Val_mse = history.history[list(history.history.keys())[3]]  
+        print(f'AUC validation Score for fold {fold_no} and L1 Regularized {CoeffS} is: {Val_mse, param_counter+1}')
+        Val_mse_All.append(Val_mse)
+        Val_loss_All.append(Val_loss)     
         fold_no = fold_no + 1         
+    print("the Shape of Val Loss All for the current 5-fold is: ",np.asarray(Val_loss_All).shape) 
+    AVG_Val_Loss[param_counter] = np.mean(np.array(Val_loss_All),axis=0) 
+    AVG_Val_mse[param_counter] = np.mean(np.array(Val_mse_All),axis=0) 
+#############    
+
 
 end = time.time()
-print(end - start)
 
 CPU_Time = end - start
-    
-# result_test = np.mean(np.array(pred_test), axis = 0)
-print(MSE_te)
-#Average_MSE = np.mean(MSE_te,axis=0)
-Average_MSE = MSE_te.mean(axis=0) #column means
-print(Average_MSE)
+print(CPU_Time)
 
-Opt_ind = np.argmin(Average_MSE)
-print(Opt_ind)
-#Opt_ind =Opt_ind -1
-Best_coeff = Param_Space['L1_Norm'].iat[Opt_ind]
-Opt_epochs = int(Param_Space['Epoch'].iat[Opt_ind])
-Best_LR = Param_Space['Learning_Rate'].iat[Opt_ind]
-Best_Drop = Param_Space['Drop_Rate'].iat[Opt_ind]+0.2
+CoeffS = np.array(Param_Space['L1_Norm'][:num_param])
 
-print("_" * 20) 
-print("Best_LR, Best_coeff, Opt_epochs, Best_Drop, Opt_ind")
-print([Best_LR, Best_coeff, Opt_epochs, Best_Drop, Opt_ind])
-print("_" * 20) 
+temp_coeff = np.tile(CoeffS.transpose(), (num_epochs,1)).T
+
+Lr = np.array(Param_Space['Learning_Rate'][:num_param])
+
+temp_Lr = np.tile(Lr.transpose(), (num_epochs,1)).T
+
+vect_val = AVG_Val_Loss.ravel() # vectorize a numpy array
+
+vect_coef = temp_coeff.ravel() # vectorize a numpy array
+
+vect_lr = temp_Lr.ravel() # vectorize a numpy array
+
+temp_sort_ind = np.argsort(vect_val) 
+
+maximum_loss = np.max(vect_val)
+minimum_loss = np.min(vect_val)
+W_FIs = np.zeros((1, num_param*num_epochs))
+for i in range(num_param*num_epochs):
+    W_FIs[0,i]=(maximum_loss - vect_val[i])/(maximum_loss - minimum_loss)
+  
+W_optimal = W_FIs[0,temp_sort_ind]
+
+truncated_sort_ind = temp_sort_ind[:cuttoff_point]
+
+vect_opt_lr = vect_lr[temp_sort_ind][:cuttoff_point]
+
+vect_opt_coef = vect_coef[temp_sort_ind][:cuttoff_point]
+
+q, r = divmod((truncated_sort_ind+1), num_epochs)
+
+temp2 = q+(r/num_epochs)
+
+category_param = np.ceil(temp2)
+
+epoch_trunc = np.zeros((cuttoff_point))
+q, r = divmod((truncated_sort_ind+1), category_param)
+
+res = (truncated_sort_ind+1)%num_epochs
+
+for i in range(0,cuttoff_point):
+    if res[i] != 0:
+        epoch_trunc[i] = res[i]
+    else:
+        epoch_trunc[i] = num_epochs
+
+For_FI_callback = np.column_stack((vect_opt_lr,vect_opt_coef,epoch_trunc,W_optimal[:cuttoff_point]))
+
+
+print(For_FI_callback)
+
 
 print('Retrain with best parameters')
-Gradients_All=np.zeros((num_row,pVal,Num_knock+1));
-counter=Opt_epochs;
-class My_Callback(keras.callbacks.Callback):
-    def __init__(self, outputDir, pVal):
+Feat_Import = [];
+class My_Callback2(keras.callbacks.Callback):
+    def __init__(self, outputDir, pVal, epoch_param_current):
         self.outputDir = outputDir;
         self.pVal = pVal;
-        
-        print(self.outputDir);      
+        self.epoch_param_current = epoch_param_current;
+        print(self.outputDir);
     def on_epoch_end(self, epoch, logs={}):
-        global counter
-        print(epoch+1)
-        counter = counter-1;
-        print("counter is",counter)   
-
-    def on_batch_end(self, batch, logs={}): 
-        global counter
-        if counter == 1:
-            print(batch)
-            x_tensor = tf.convert_to_tensor(x3D_all[(batch*batch_size):(batch+1)*batch_size,:,:], dtype=tf.float32)
-            with tf.GradientTape() as t:
-                t.watch(x_tensor)
-                output = DNN(x_tensor)
-                print("size of output is:",output.shape)
-            gradients = t.gradient(output, x_tensor)
-            print("size of gradient is:",gradients.shape)
-            Gradients_All[(batch*batch_size):(batch+1)*batch_size,:,:]=gradients;
+        if (epoch+1) in epoch_param_current:  
+            #print('Calc grad here for epoch: ', epoch+1)
+            x3D_allT = tf.convert_to_tensor(x3D_all, dtype=tf.float32) 
+            with tf.GradientTape() as tape:
+                tape.watch(x3D_allT)
+                predictions = DNN(x3D_allT)
+                predictions_indexed = _index_predictions(predictions, Y)
+            gradients = tape.gradient(predictions_indexed, x3D_allT)
+            temp_g = gradients.numpy() 
+            #print('Shape of temp_g is : ',temp_g.shape)
+            avg_all = np.zeros((pVal,Num_knock+1));
+            for row_ind in range(temp_g.shape[1]):
+                for col_ind in range(temp_g.shape[2]):
+                    avg_all[row_ind,col_ind] = np.mean(temp_g[:,row_ind,col_ind])         
+            #print('Shape of avg_all is : ',avg_all.shape)        
+            Feat_Import.append(np.hstack((avg_all[:,0],avg_all[:,1],avg_all[:,2],avg_all[:,3],avg_all[:,4],avg_all[:,5])))
+################
 
 validation_split = 0
 def train_DNN(model, X, y, myCallback):
-    model.fit(X, y, epochs=Opt_epochs, batch_size=batch_size, verbose=0, validation_split = validation_split, callbacks=[myCallback]);   
-    return model;
+    model.fit(X, y, epochs=num_epochs, batch_size=batch_size, verbose=1,
+              validation_split=0, callbacks=[myCallback]);   
+    return model; 
+################################################################################
 
-DNN = getModelLocalEq(pVal, Best_coeff, Best_LR, Best_Drop); 
-myCallback = My_Callback(outputDir, pVal);
-DNN = train_DNN(DNN, x3D_all, Y, myCallback);
 
-y_score = predict_DNN(DNN, x3D_all, Y); 
-MSE_All = mean_squared_error(Y, y_score)       
-print(MSE_All)
 
-avg_all = np.zeros((pVal,Num_knock+1));
-for row_ind in range(Gradients_All.shape[1]):
-    for col_ind in range(Gradients_All.shape[2]):
-        avg_all[row_ind,col_ind] = np.mean(Gradients_All[:,row_ind,col_ind]) 
-Feat_Import = np.hstack((avg_all[:,0],avg_all[:,1],avg_all[:,2],avg_all[:,3],avg_all[:,4],avg_all[:,5]));
+for i in range(0,num_param):
+    print('the current parameter to check is: ',i+1)
+    lr = Param_Space['Learning_Rate'].iat[i]
+    CoeffS = Param_Space['L1_Norm'].iat[i]
+    temp = For_FI_callback[(For_FI_callback[:,0]==lr) & (For_FI_callback[:,1]==CoeffS)]
+    sorted_filtered_param = temp[temp[:, 2].argsort()]
+    epoch_param_current = sorted_filtered_param[:,2]
+    print('The length of the epochs for the current paramter is',len(epoch_param_current))
+    if len(epoch_param_current)==0: 
+        print('The size of epoch for this current param is zero')            
+    else:
+        DNN = getModelLocalEq(pVal, CoeffS, lr);   # lrS[int(val)]
+        myCallback = My_Callback2(outputDir, pVal, epoch_param_current);
+        trained_DNN = train_DNN(DNN, x3D_all, Y, myCallback);
 
-np.savetxt('FI_Reg_' + str(indx)+ '.csv', Feat_Import, delimiter=",")
+Temp = np.array(np.transpose(Feat_Import)).dot(np.transpose(For_FI_callback[:,3]))
+#print("Size of Temp is",Temp.shape)  
+FI_final = Temp/np.sum(W_FIs)
+FI_final
 
-METRICS_HMDP_New = [Opt_epochs, Best_coeff, Best_LR, Best_Drop, MSE_All, Average_MSE, np.min(Average_MSE), CPU_Time, indx]; 
+np.savetxt(outputDir + 'FI_Reg_' + str(indx)+ '.csv', FI_final, delimiter=",")
 
-with open(os.path.join('METRICS_HMDP_Reg_B.csv'), "a+") as fp:
-    wr = csv.writer(fp, dialect='excel'); 
-    wr.writerow(METRICS_HMDP_New);
-try:
-    os.stat(outputDir)
-except:
-    os.mkdir(outputDir)
-
-print(METRICS_HMDP_New)
-print('Done!')     
+print('Done!')  
 
