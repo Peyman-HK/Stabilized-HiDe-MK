@@ -45,21 +45,21 @@ install.packages(c('glmnet', 'data.matrix', 'knockoff'))
 
 ## Results
 
-In the folder manuals, we explained step by step how to run the code to observe results from both learning through stabilized HiDe-MK python code, and obtaining FDR-Power through R scripts. To obtain the FDR and power through the feature importance score learned by stabilized HiDe-MK, you should run the R script FDR_Pow_MK.R. The target FDR levels are set from 0.01 to 0.20 with step size 0.01. 
+In the manuals' folder, we step by step explained how to run the code to obtain results for learning through stabilized HiDe-MK (python code), and results for FDR-Power (R scripts). To obtain the FDR and power through the feature importance scores learned by stabilized HiDe-MK, you should run the R script FDR_Pow_MK.R. The target FDR levels are set from 0.01 to 0.20 with step size 0.01. 
 
 
-We also uploaded a tabel, "Table_summary_HF_KS_Lancet.csv", obtained through the real data analysis which includes q-values for each genetic variant. Through the "Manhattan plot.ipyng" and using jupyter notebook, the following plot can be displayed: 
+We also uploaded a tabel, "Table_summary_HF_KS_Lancet.csv", obtained through the real data analysis which includes q-values for each genetic variant. Through the "Manhattan plot.ipyng" and using jupyter notebook, the following plot is displayed: 
 
 ![Main flow](/../main/Images/Manhattan_plot.jpg?raw=true "Manhattan plot")
 
 
 ## Citations
 
-The paper titled by "Deep neural networks with controlled variable selection for the identification of putative causal genetic variants" is in Arxiv:
+The paper titled by "Deep neural networks with controlled variable selection for the identification of putative causal genetic variants" is uploaded to Arxiv:
 
 https://arxiv.org/abs/2109.14719
 
-To extract the knockoff features we used KnockoffScreen method which was first proposed in journal of nature communications at: https://www.nature.com/articles/s41467-021-22889-4
+To extract the knockoff features, we used KnockoffScreen method which was first proposed in journal of nature communications at: https://www.nature.com/articles/s41467-021-22889-4
 
 Please feel free to write me your questions at: peymanhk@stanford.edu
 
