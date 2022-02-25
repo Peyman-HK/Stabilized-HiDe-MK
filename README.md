@@ -41,7 +41,7 @@ pip3 install keras==2.6
 
 
 ### Install R dependencies
-install.packages(c('glmnet', 'data.matrix', 'knockoff'))
+install.packages(c('glmnet', 'data.matrix', 'KnockoffScreen'))
 
 ## Results
 
