@@ -60,9 +60,9 @@ The following steps helps test/run the proposed HiDe-MK for a classification exa
 Steps:
 1. Create a folder somewhere to keep the installed libraries.
 Let us call this folder: 
-C:/users/De-randomized-HiDe-MK/
+C:/users/Stabilized-HiDe-MK/
 
-Download  De-randomized-HiDe-MK from Github and put its content into this folder. 
+Download  Stabilized-HiDe-MK from Github and put its content into this folder. 
 
 2. Install Tensorflow version 2.6
 pip3 install --user tensorflow==2.6
@@ -71,7 +71,7 @@ If pip3 gives error, please try with pip or conda.
 
 3. Change the value for the variable 'outputDir' in line 72 of file 'HiDe_Class_GIO.py' in the path 'C:/users/hide_mk/Python' to:
 
-outputDir = 'C:/users/De-randomized-HiDe-MK/Simulation data/class/'
+outputDir = 'C:/users/Stabilized-HiDe-MK/Simulation data/class/'
 
 This fix the address of data files.
 
@@ -98,7 +98,7 @@ install.packages(c('glmnet', 'data.matrix', 'knockoff'))
 
 8- Again, change the line 'path_data' (line 22) in this file to read the FIs (which was learned by the neuo-net), Beta, and Y. 
 
-9- Update or change the path for source('/home/users/peymanhk/PROJECT_2/Simulated/GOI/KnockoffScreen_updated.R') to where KnockoffScreen_updated.R is located in your PC of folder "De-randomized-HiDe-MK"
+9- Update or change the path for source('/home/users/peymanhk/PROJECT_2/Simulated/GOI/KnockoffScreen_updated.R') to where KnockoffScreen_updated.R is located in your PC of folder "Stabilized-HiDe-MK"
 
 10- Run this R script and you get FDR and Power for different target FDR levels from 0.01 to 0.20 by step size 0.01. 
 
