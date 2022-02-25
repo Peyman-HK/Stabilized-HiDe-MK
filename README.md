@@ -107,11 +107,6 @@ The first 20 values are observed/empricial FDRs and the second 20 values are the
 
 12- Done!
 
-Please feel free to ask me your questions through: peymanhk@stanford.edu  / phkassani@gmail.com
-
-
-
-
 ## Citations
 
 The paper titled by "Deep neural networks with controlled variable selection for the identification of putative causal genetic variants" is uploaded to Arxiv:
