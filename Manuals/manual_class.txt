@@ -26,6 +26,7 @@ numpy
 pandas
 SKlearn
 
+
 5- The output of this file is a csv file with name "FI_Class_1.csv" which is the vector of the feature importance scores (FIs). 
 
 You are done with learning from data and extracting FIs. This approaximately takes an hour to two hours. 
@@ -35,7 +36,11 @@ You are done with learning from data and extracting FIs. This approaximately tak
 
 6- First, install the following packages throgu the R: 
 
-install.packages(c('glmnet', 'data.matrix', 'knockoff'))
+install.packages(c('glmnet', 'data.matrix', 'KnockoffScreen'))
+
+
+To extract the knockoff features, we used KnockoffScreen method which was first proposed in journal of nature communications at: https://www.nature.com/articles/s41467-021-22889-4
+
 
 7- Then, open the file "FDR_Pow_MK.R" throug the folder 'R' of the downloaded package. 
 
