@@ -13,7 +13,7 @@ R: R simulation codes
 
 Python: python codes
 
-Manuals: Package manuals for help in both R and python
+Manual: Package manual for help in both R and python
 
 
 ## System Requirements
@@ -45,7 +45,7 @@ install.packages(c('glmnet', 'data.matrix', 'KnockoffScreen'))
 
 ## Results
 
-In the manuals' folder, we step by step explained how to run the code to obtain results for learning through stabilized HiDe-MK (python code), and results for FDR-Power (R scripts). To obtain the FDR and power through the feature importance scores learned by stabilized HiDe-MK, you should run the R script FDR_Pow_MK.R. The target FDR levels are set from 0.01 to 0.20 with step size 0.01. 
+In the manual' folder, we step by step explained how to run the code to obtain results for learning through stabilized HiDe-MK (python code), and results for FDR-Power (R scripts). To obtain the FDR and power through the feature importance scores learned by stabilized HiDe-MK, you should run the R script FDR_Pow_MK.R. The target FDR levels are set from 0.01 to 0.20 with step size 0.01. 
 
 
 We also uploaded a tabel, "Table_summary_HF_KS_Lancet.csv", obtained through the real data analysis which includes q-values for each genetic variant. Through the "Manhattan plot.ipyng" and using jupyter notebook, the following plot is displayed: 
